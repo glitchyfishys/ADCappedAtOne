@@ -64,7 +64,7 @@ export const Pelle = {
       Pelle.armageddon(true);
       return;
     }
-
+    
     Glyphs.harshAutoClean();
     if (!Glyphs.unequipAll()) {
       Modal.hideAll();
@@ -86,6 +86,7 @@ export const Pelle = {
     player.reality.automator.state.forceRestart = false;
     if (BlackHoles.arePaused) BlackHoles.togglePause();
     player.celestials.pelle.doomed = true;
+    player.records.effectiveAntimatter = DC.D1;
     Pelle.armageddon(false);
     respecTimeStudies(true);
     Currency.infinityPoints.reset();
@@ -93,6 +94,11 @@ export const Pelle = {
     Autobuyer.bigCrunch.mode = AUTO_CRUNCH_MODE.AMOUNT;
     disChargeAll();
     clearCelestialRuns();
+
+    player.celestials.pelle.records.totalAntimatter = DC.D0; // for whatever reason this has to be reset
+    player.celestials.pelle.records.totalInfinityPoints = DC.D0;
+    player.celestials.pelle.records.totalEternityPoints = DC.D0;
+
 
     // Force-enable the group toggle for AD autobuyers to be active; whether or not they can actually tick
     // is still handled through if the autobuyers are unlocked at all. This fixes an odd edge case where the player
@@ -353,8 +359,8 @@ export const Pelle = {
     }
     return zalgo(str, Math.floor(stage ** 2 * 7));
   },
-
-  endTabNames: "End Is Nigh Destruction Is Imminent Help Us Good Bye Forever".split(" "),
+  
+  endTabNames: "The Game Is Capped At One And Softcapped At Zero :3".split(" "),
 
   quotes: Quotes.pelle,
 };

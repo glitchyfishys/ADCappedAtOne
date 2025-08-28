@@ -182,7 +182,7 @@ export function getTP(antimatter, requireEternity) {
 // Returns the amount of TP gained, subtracting out current TP; used for displaying gained TP, text on the
 // "exit dilation" button (saying whether you need more antimatter), and in last 10 eternities
 export function getTachyonGain(requireEternity) {
-  return getTP(Currency.antimatter.value, requireEternity).minus(Currency.tachyonParticles.value).clampMin(0);
+  return getTP(player.records.thisInfinity.maxAM, requireEternity).minus(Currency.tachyonParticles.value).clampMin(0);
 }
 
 // Returns the minimum antimatter needed in order to gain more TP; used only for display purposes
@@ -215,7 +215,7 @@ export function getDilationTimeEstimate(goal) {
 
 export function dilatedValueOf(value) {
   const log10 = value.log10();
-  const dilationPenalty = 0.75 * Effects.product(DilationUpgrade.dilationPenalty);
+  const dilationPenalty = 0.75 * Effects.product(DilationUpgrade.dilationPenalty, Achievement(161));
   return Decimal.pow10(Math.sign(log10) * Math.pow(Math.abs(log10), dilationPenalty));
 }
 

@@ -93,9 +93,10 @@ export class DarkMatterDimensionState extends DimensionState {
       .times(this.commonDarkMult)
       .times(Math.pow(POWER_DE_PER_ASCENSION, this.ascensions))
       .timesEffectsOf(
+        Achievement(174),
         SingularityMilestone.darkEnergyMult,
         SingularityMilestone.realityDEMultiplier,
-        SingularityMilestone.multFromInfinitied
+        SingularityMilestone.multFromInfinitied,
       ).toNumber() * destabilizeBoost;
   }
 

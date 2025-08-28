@@ -9,11 +9,10 @@ import { GlyphTypes } from "./glyph-effects";
 // This is actually reassigned when importing saves
 // eslint-disable-next-line prefer-const
 window.player = {
-  antimatter: DC.E1,
+  antimatter: DC.D1,
   dimensions: {
     antimatter: Array.range(0, 8).map(() => ({
       bought: 0,
-      costBumps: 0,
       amount: DC.D0
     })),
     infinity: Array.range(0, 8).map(tier => ({
@@ -43,7 +42,7 @@ window.player = {
     },
     infinity: {
       current: 0,
-      bestTimes: Array.repeat(Number.MAX_VALUE, 8),
+      bestTimes: Array.repeat(Number.MAX_VALUE, 9),
       completedBits: 0,
     },
     eternity: {
@@ -221,7 +220,6 @@ window.player = {
   chall2Pow: 1,
   chall3Pow: DC.D0_01,
   matter: DC.D1,
-  chall9TickspeedCostBumps: 0,
   chall8TotalSacrifice: DC.D1,
   ic2Count: 0,
   partInfinityPoint: 0,
@@ -268,6 +266,7 @@ window.player = {
     }
   },
   records: {
+    effectiveAntimatter: DC.D1,
     gameCreatedTime: Date.now(),
     totalTimePlayed: 0,
     timePlayedAtBHUnlock: Number.MAX_VALUE,
@@ -943,7 +942,7 @@ export const Player = {
     if (Enslaved.isRunning && Enslaved.BROKEN_CHALLENGES.includes(NormalChallenge.current?.id)) return false;
     const challenge = NormalChallenge.current || InfinityChallenge.current;
     const goal = challenge === undefined ? Decimal.NUMBER_MAX_VALUE : challenge.goal;
-    return player.records.thisInfinity.maxAM.gte(goal);
+    return AntimatterDimension(1).amount.gte(goal);
   },
 
   get canEternity() {

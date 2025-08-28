@@ -23,7 +23,7 @@ function rebuyable(config) {
 export const dilationUpgrades = {
   dtGain: rebuyable({
     id: 1,
-    initialCost: 1e4,
+    initialCost: 1000,
     increment: 10,
     description: () =>
       ((SingularityMilestone.dilatedTimeFromSingularities.canBeApplied || Achievement(187).canBeApplied)
@@ -49,7 +49,7 @@ export const dilationUpgrades = {
   }),
   galaxyThreshold: rebuyable({
     id: 2,
-    initialCost: 1e6,
+    initialCost: 1e5,
     increment: 100,
     description: () =>
       (Perk.bypassTGReset.isBought && !Pelle.isDoomed
@@ -68,7 +68,7 @@ export const dilationUpgrades = {
   }),
   tachyonGain: rebuyable({
     id: 3,
-    initialCost: 1e7,
+    initialCost: 1e6,
     increment: 20,
     description: () => {
       if (Pelle.isDoomed) return `Multiply the amount of Tachyon Particles gained by ${formatInt(1)}`;

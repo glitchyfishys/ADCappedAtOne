@@ -43,7 +43,7 @@ class InfinityDimensionState extends DimensionState {
       DC.E1100,
       DC.E1900,
       DC.E2400,
-      DC.E10500,
+      DC.E8500,
       DC.E30000,
       DC.E45000,
       DC.E54000,
@@ -54,7 +54,7 @@ class InfinityDimensionState extends DimensionState {
     this._costMultiplier = COST_MULTS[tier];
     const POWER_MULTS = [null, 50, 30, 10, 5, 5, 5, 5, 5];
     this._powerMultiplier = POWER_MULTS[tier];
-    const BASE_COSTS = [null, 1e8, 1e9, 1e10, 1e20, 1e140, 1e200, 1e250, 1e280];
+    const BASE_COSTS = [null, 1e8, 1e9, 1e10, 1e20, 1e140, 1e180, 1e250, 1e280];
     this._baseCost = new Decimal(BASE_COSTS[tier]);
     this.ipRequirement = BASE_COSTS[1];
   }
@@ -131,17 +131,16 @@ class InfinityDimensionState extends DimensionState {
     }
     let production = this.amount;
     if (EternityChallenge(11).isRunning) {
-      return production;
-    }
-    if (EternityChallenge(7).isRunning) {
-      production = production.times(Tickspeed.perSecond);
+      return production.mul(this.multiplier);
     }
     return production.times(this.multiplier);
   }
 
   get multiplier() {
     const tier = this.tier;
-    if (EternityChallenge(11).isRunning) return DC.D1;
+    if (EternityChallenge(11).isRunning) {
+      return replicantiMult();
+    }
     let mult = GameCache.infinityDimensionCommonMultiplier.value
       .timesEffectsOf(
         tier === 1 ? Achievement(94) : null,
@@ -154,7 +153,6 @@ class InfinityDimensionState extends DimensionState {
     if (tier === 1) {
       mult = mult.times(PelleRifts.decay.milestones[0].effectOrDefault(1));
     }
-
 
     mult = mult.pow(getAdjustedGlyphEffect("infinitypow"));
     mult = mult.pow(getAdjustedGlyphEffect("effarigdimensions"));
@@ -374,13 +372,9 @@ export const InfinityDimensions = {
       InfinityDimension(tier).produceDimensions(InfinityDimension(tier - 1), diff / 10);
     }
 
-    if (EternityChallenge(7).isRunning) {
-      if (!NormalChallenge(10).isRunning) {
-        InfinityDimension(1).produceDimensions(AntimatterDimension(7), diff);
-      }
-    } else {
-      InfinityDimension(1).produceCurrency(Currency.infinityPower, diff);
-    }
+    
+    InfinityDimension(1).produceCurrency(Currency.infinityPower, diff);
+    
 
     player.requirementChecks.reality.maxID1 = player.requirementChecks.reality.maxID1
       .clampMin(InfinityDimension(1).amount);

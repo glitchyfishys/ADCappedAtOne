@@ -34,7 +34,7 @@ export const eternityChallenges = [
   },
   {
     id: 3,
-    description: "Antimatter Dimensions 5-8 don't produce anything. Dimensional Sacrifice is disabled.",
+    description: "8th ADs don't produce anything. Dimensional Sacrifice is disabled.",
     goal: DC.E600,
     pelleGoal: DC.E925,
     goalIncrease: DC.E75,
@@ -100,8 +100,7 @@ export const eternityChallenges = [
   {
     id: 7,
     description:
-      "1st Time Dimensions produce 8th Infinity Dimensions and 1st Infinity Dimensions produce " +
-      "7th Antimatter Dimensions. Tickspeed also directly applies to Infinity and Time Dimensions.",
+      "1st Time Dimensions produce 8th Infinity Dimensions instead of Time Shards.",
     goal: DC.E2000,
     pelleGoal: DC.E2700,
     goalIncrease: DC.E530,
@@ -172,11 +171,11 @@ export const eternityChallenges = [
   {
     id: 11,
     description: () => `all Dimension multipliers and powers are disabled except for the multipliers from
-      Infinity Power and Dimension Boosts (to Antimatter Dimensions). ${specialInfinityGlyphDisabledEffectText()}`,
+      Infinity Power and Dimension Boosts to ADs, Replicanti to IDs and Replicanti is faster.  ${specialInfinityGlyphDisabledEffectText()}`,
     goal: DC.E450,
     pelleGoal: DC.E11200,
     goalIncrease: DC.E200,
-    pelleGoalIncrease: DC.E1400,
+    pelleGoalIncrease: DC.E1200,
     reward: {
       description: "Further reduce Tickspeed cost multiplier growth",
       effect: completions => completions * 0.07,

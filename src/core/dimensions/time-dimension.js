@@ -242,9 +242,6 @@ class TimeDimensionState extends DimensionState {
       return this.amount;
     }
     let production = this.amount.times(this.multiplier);
-    if (EternityChallenge(7).isRunning) {
-      production = production.times(Tickspeed.perSecond);
-    }
     if (this._tier === 1 && !EternityChallenge(7).isRunning) {
       production = production.pow(getAdjustedGlyphEffect("timeshardpow"));
     }

@@ -76,7 +76,7 @@ export const Effarig = {
       AlchemyResource.effarig.effectValue;
   },
   get maxRarityBoost() {
-    return 5 * Math.log10(Math.log10(Currency.relicShards.value + 10));
+    return Math.log10(Currency.relicShards.value + 10) ** 0.8;
   },
   nerfFactor(power) {
     let c;
@@ -85,7 +85,7 @@ export const Effarig = {
         c = 1500;
         break;
       case EFFARIG_STAGES.ETERNITY:
-        c = 29.29;
+        c = 21.21;
         break;
       case EFFARIG_STAGES.REALITY:
       default:

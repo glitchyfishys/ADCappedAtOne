@@ -98,6 +98,9 @@ export const GalaxyGenerator = {
       this.generationCap
     );
 
+    AntimatterDimension(8).amount = AntimatterDimension(8).amount
+      .add(player.celestials.pelle.galaxyGenerator.generatedGalaxies * diff / 1000);
+
     if (!this.capRift) {
       PelleRifts.all.forEach(r => r.reducedTo = Math.min(r.reducedTo + 0.03 * diff / 1000, 2));
       if (PelleRifts.vacuum.milestones[0].canBeApplied && !this.hasReturnedGlyphSlot) {
@@ -114,6 +117,10 @@ export class GalaxyGeneratorUpgrade extends RebuyableMechanicState {
     return this.config.currency();
   }
 
+  set currency(v) {
+    AntimatterDimension(8).amount = AntimatterDimension(8).amount.sub(v);
+  }
+
   get boughtAmount() {
     return player.celestials.pelle.rebuyables[this.id];
   }
@@ -127,6 +134,17 @@ export class GalaxyGeneratorUpgrade extends RebuyableMechanicState {
   get effectValue() {
     return this.config.effect(this.boughtAmount);
   }
+
+  purchase() {
+    if (!this.canBeBought) return false;
+    if (GameEnd.creditsEverClosed) return false;
+    if (this.id == 'galaxyGeneratorAdditive') this.currency = this.cost;
+    else this.currency.subtract(this.cost);
+    this.boughtAmount++;
+    GameUI.update();
+    return true;
+  }
+
 }
 
 export const GalaxyGeneratorUpgrades = mapGameDataToObject(

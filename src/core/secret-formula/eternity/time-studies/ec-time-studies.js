@@ -33,7 +33,7 @@ export const ecTimeStudies = [
     secondary: {
       resource: "8th Antimatter Dimensions",
       current: () => AntimatterDimension(8).totalAmount,
-      required: completions => new Decimal(17300 + Math.min(completions, 4) * 1250),
+      required: completions => new Decimal(8700 + Math.min(completions, 4) * 950),
       formatValue: value => formatInt(Math.floor(value.toNumber()))
     }
   },
@@ -80,7 +80,7 @@ export const ecTimeStudies = [
     reqType: TS_REQUIREMENT_TYPE.AT_LEAST_ONE,
     secondary: {
       resource: "antimatter",
-      current: () => Currency.antimatter.value,
+      current: () => player.records.effectiveAntimatter,
       required: completions => DC.E300000.pow(Math.min(completions, 4)).times(DC.E500000),
       formatValue: value => format(value)
     }

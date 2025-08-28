@@ -464,7 +464,6 @@ export const devMigrations = {
     },
     migrations.renameNewsOption,
     migrations.removeDimensionCosts,
-    migrations.renameTickspeedPurchaseBumps,
     player => {
       const safeArrayToBits = x => ((x === undefined) ? 0 : arrayToBits(x));
       player.celestials.teresa.unlockBits = safeArrayToBits(player.celestials.teresa.unlocks);
@@ -731,7 +730,6 @@ export const devMigrations = {
         for (let i = 0; i < player.dimensions.normal.length; i++) {
           const dimension = player.dimensions.normal[i];
           player.dimensions.antimatter[i].bought = dimension.bought;
-          player.dimensions.antimatter[i].costBumps = dimension.costBumps;
           player.dimensions.antimatter[i].amount = new Decimal(dimension.amount);
         }
         delete player.dimensions.normal;

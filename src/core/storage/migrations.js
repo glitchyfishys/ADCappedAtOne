@@ -724,13 +724,6 @@ export const migrations = {
     }
   },
 
-  renameTickspeedPurchaseBumps(player) {
-    if (player.chall9TickspeedPurchaseBumps !== undefined) {
-      player.chall9TickspeedCostBumps = player.chall9TickspeedPurchaseBumps;
-      delete player.chall9TickspeedPurchaseBumps;
-    }
-  },
-
   removePostC3Reward(player) {
     delete player.postC3Reward;
   },

@@ -70,10 +70,10 @@ export const GlyphSacrificeHandler = {
   },
   // Scaling function to make refinement value ramp up with higher glyph levels
   levelRefinementValue(level) {
-    return Math.pow(level, 3) / 1e8;
+    return Math.pow(level, 3) / 8e7;
   },
   // Refined glyphs give this proportion of their maximum attainable value from their level
-  glyphRefinementEfficiency: 0.05,
+  glyphRefinementEfficiency: 0.15,
   glyphRawRefinementGain(glyph) {
     if (!Ra.unlocks.unlockGlyphAlchemy.canBeApplied) return 0;
     const glyphMaxValue = this.levelRefinementValue(glyph.level);

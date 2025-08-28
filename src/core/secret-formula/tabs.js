@@ -402,7 +402,7 @@ export const tabs = [
     name: "Celestials",
     hideAt: 2.4,
     UIClass: "o-tab-btn--celestial",
-    condition: () => Teresa.isUnlocked,
+    condition: () => Teresa.isUnlocked || player.celestials.pelle.galaxyGenerator.unlocked,
     id: 9,
     hidable: true,
     subtabs: [
@@ -472,7 +472,7 @@ export const tabs = [
         name: "Pelle",
         symbol: "♅",
         component: "PelleTab",
-        condition: () => Pelle.isUnlocked,
+        condition: () => Pelle.isUnlocked || player.celestials.pelle.galaxyGenerator.unlocked,
         id: 7,
         hidable: true,
       }

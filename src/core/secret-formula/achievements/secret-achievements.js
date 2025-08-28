@@ -117,8 +117,9 @@ export const secretAchievements = [
   },
   {
     id: 33,
-    name: "A sound financial decision",
-    description: "Click on the button to purchase STD coins."
+    name: "Chess Battle Advanced",
+    description: "Name Your Save \"Icely Puzzles\""
+    // CBA is now in AD Capped At One!
   },
   {
     id: 34,

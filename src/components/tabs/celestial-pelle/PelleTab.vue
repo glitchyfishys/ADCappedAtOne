@@ -43,7 +43,7 @@ export default {
           this.cappedResources === this.totalAlchemyResources;
       }
       this.hasStrike = PelleStrikes.all.some(s => s.hasStrike);
-      this.hasGalaxyGenerator = PelleRifts.recursion.milestones[2].canBeApplied || GalaxyGenerator.spentGalaxies > 0;
+      this.hasGalaxyGenerator = PelleRifts.recursion.milestones[2].canBeApplied || player.celestials.pelle.galaxyGenerator.unlocked;
     },
     toggleBought() {
       Pelle.cel.showBought = !Pelle.cel.showBought;
@@ -62,7 +62,7 @@ export default {
 <template>
   <div class="l-pelle-celestial-tab">
     <div
-      v-if="isDoomed"
+      v-if="isDoomed || hasGalaxyGenerator"
       class="l-pelle-all-content-container"
     >
       <CelestialQuoteHistory celestial="pelle" />
@@ -77,7 +77,7 @@ export default {
       <br>
       <GalaxyGeneratorPanel v-if="hasGalaxyGenerator" />
       <PelleBarPanel v-if="hasStrike" />
-      <PelleUpgradePanel />
+      <PelleUpgradePanel v-if="isDoomed"/>
     </div>
     <button
       v-else-if="canEnterPelle"

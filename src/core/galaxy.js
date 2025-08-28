@@ -67,11 +67,11 @@ export class Galaxy {
   }
 
   static get costMult() {
-    return Effects.min(NormalChallenge(10).isRunning ? 90 : 60, TimeStudy(42));
+    return Effects.min(60, TimeStudy(42));
   }
 
   static get baseCost() {
-    return NormalChallenge(10).isRunning ? 99 : 80;
+    return NormalChallenge(10).isRunning ? 49 : 80;
   }
 
   static get requiredTier() {
@@ -81,7 +81,7 @@ export class Galaxy {
   static get canBeBought() {
     if (EternityChallenge(6).isRunning && !Enslaved.isRunning) return false;
     if (NormalChallenge(8).isRunning || InfinityChallenge(7).isRunning) return false;
-    if (player.records.thisInfinity.maxAM.gt(Player.infinityGoal) &&
+    if (AntimatterDimension(1).amount.gt(Player.infinityGoal) &&
        (!player.break || Player.isInAntimatterChallenge)) return false;
     return true;
   }

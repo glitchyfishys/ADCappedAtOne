@@ -107,9 +107,9 @@ export default {
       const teresaReward = this.formatScalingMultiplierText(
         "Glyph Sacrifice",
         Teresa.runRewardMultiplier,
-        Math.max(Teresa.runRewardMultiplier, Teresa.rewardMultiplier(Currency.antimatter.value)));
+        Math.max(Teresa.runRewardMultiplier, Teresa.rewardMultiplier(player.records.thisInfinity.maxAM)));
       const teresaThreshold = this.formatThresholdText(
-        Teresa.rewardMultiplier(Currency.antimatter.value) > Teresa.runRewardMultiplier,
+        Teresa.rewardMultiplier(player.records.thisInfinity.maxAM) > Teresa.runRewardMultiplier,
         player.celestials.teresa.bestRunAM,
         "antimatter");
       this.celestialRunText = [
@@ -129,7 +129,7 @@ export default {
     },
     // Make the button have a visual animation if Realitying will give a reward
     hasSpecialReward() {
-      if (Teresa.isRunning && Teresa.rewardMultiplier(Currency.antimatter.value) > Teresa.runRewardMultiplier) {
+      if (Teresa.isRunning && Teresa.rewardMultiplier(player.records.thisInfinity.maxAM) > Teresa.runRewardMultiplier) {
         return true;
       }
       return Currency.eternityPoints.value.exponent > 4000 &&

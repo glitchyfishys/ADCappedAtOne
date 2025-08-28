@@ -18,7 +18,7 @@ const tutorialStates = [
   {
     // Highlight the 2nd dim button
     id: TUTORIAL_STATE.DIM2,
-    condition: () => Currency.antimatter.gte(100)
+    condition: () => AntimatterDimension(1).amount.gte(10)
   },
   {
     id: TUTORIAL_STATE.TICKSPEED,
@@ -30,7 +30,7 @@ const tutorialStates = [
   },
   {
     id: TUTORIAL_STATE.GALAXY,
-    condition: () => AntimatterDimension(8).amount.gte(80)
+    condition: () => AntimatterDimension(8).amount.gte(40)
   },
   {
     id: TUTORIAL_STATE.AUTOMATOR,

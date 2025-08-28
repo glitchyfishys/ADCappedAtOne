@@ -10,16 +10,16 @@ export function updateNormalAndInfinityChallenges(diff) {
         Math.clampMax(player.galaxies, 100) / 100;
       Currency.matter.multiply(Decimal.pow(cappedBase, diff / 20));
     }
-    if (Currency.matter.gt(Currency.antimatter.value) && NormalChallenge(11).isRunning && !Player.canCrunch) {
-      const values = [Currency.antimatter.value, Currency.matter.value];
+    if (Currency.matter.gt(player.records.effectiveAntimatter) && NormalChallenge(11).isRunning && !Player.canCrunch) {
+      const values = [player.records.effectiveAntimatter, Currency.matter.value];
       softReset(0, true, true);
-      Modal.message.show(`Your ${format(values[0], 2, 2)} antimatter was annihilated
+      Modal.message.show(`Your ${format(values[0], 2, 2)} effective antimatter was annihilated
         by ${format(values[1], 2, 2)} matter.`, { closeEvent: GAME_EVENT.BIG_CRUNCH_AFTER }, 1);
     }
   }
 
   if (NormalChallenge(3).isRunning) {
-    player.chall3Pow = player.chall3Pow.times(DC.D1_00038.pow(diff / 100)).clampMax(Decimal.NUMBER_MAX_VALUE);
+    player.chall3Pow = player.chall3Pow.times(DC.D1_00038.pow(diff / 50)).clampMax(Decimal.NUMBER_MAX_VALUE);
   }
 
   if (NormalChallenge(2).isRunning) {

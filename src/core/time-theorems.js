@@ -34,6 +34,7 @@ export class TimeTheoremPurchaseType {
   get costIncrement() { throw new NotImplementedError(); }
 
   get bulkPossible() {
+    if (this.currency instanceof Decimal) return Decimal.affordGeometricSeries(this.currency, this.cost, this.costIncrement, 0).toNumber();
     if (Perk.ttFree.canBeApplied) {
       return Math.floor(this.currency.value.divide(this.cost).log10() / this.costIncrement.log10() + 1);
     }
@@ -50,7 +51,7 @@ export class TimeTheoremPurchaseType {
     if (!this.canAfford) return false;
     let purchased = false;
     const amount = this.bulkPossible;
-    const buyFn = cost => (Perk.ttFree.canBeApplied ? this.currency.gte(cost) : this.currency.purchase(cost));
+    const buyFn = cost => ((Perk.ttFree.canBeApplied || this.currency instanceof Decimal) ? this.currency.gte(cost) : this.currency.purchase(cost));
     // This will sometimes buy one too few for EP, so we just have to buy 1 after.
     if (bulk && buyFn(this.bulkCost(amount))) {
       Currency.timeTheorems.add(amount);
@@ -80,7 +81,7 @@ TimeTheoremPurchaseType.am = new class extends TimeTheoremPurchaseType {
   get amount() { return player.timestudy.amBought; }
   set amount(value) { player.timestudy.amBought = value; }
 
-  get currency() { return Currency.antimatter; }
+  get currency() { return player.records.effectiveAntimatter; }
   get costBase() { return DC.E20000; }
   get costIncrement() { return DC.E20000; }
 }();
@@ -103,7 +104,7 @@ TimeTheoremPurchaseType.ep = new class extends TimeTheoremPurchaseType {
   get costIncrement() { return DC.D2; }
 
   bulkCost(amount) {
-    if (Perk.ttFree.canBeApplied) return this.cost.times(this.costIncrement.pow(amount - 1));
+    if (Perk.ttFree.canBeApplied || this.currency instanceof Decimal) return this.cost.times(this.costIncrement.pow(amount - 1));
     return this.costIncrement.pow(amount + this.amount).subtract(this.cost);
   }
 }();

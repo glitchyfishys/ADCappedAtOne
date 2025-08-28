@@ -54,7 +54,8 @@ export default {
       return `Purchased ${quantifyInt("time", this.bought)}`;
     },
     costUnit() {
-      return `${AntimatterDimension(this.tier - 2).shortDisplayName} AD`;
+      if (NormalChallenge(6).isRunning && this.tier > 2) return `${AntimatterDimension(this.tier - 2).shortDisplayName} AD`
+      return `${AntimatterDimension(this.tier - 1).shortDisplayName} AD`;
     },
     buttonPrefix() {
       if (!this.isUnlocked) return "Locked";
@@ -97,7 +98,7 @@ export default {
       if (this.isContinuumActive) this.continuumValue = dimension.continuumValue;
       this.isShown =
         (DimBoost.totalBoosts > 0 && DimBoost.totalBoosts + 3 >= tier) || PlayerProgress.infinityUnlocked();
-      this.isCostsAD = NormalChallenge(6).isRunning && tier > 2 && !this.isContinuumActive;
+      this.isCostsAD = tier > 1 && !this.isContinuumActive;
       this.amountDisplay = this.tier < 8 ? format(this.amount, 2) : formatInt(this.amount);
       this.hasTutorial = (tier === 1 && Tutorial.isActive(TUTORIAL_STATE.DIM1)) ||
         (tier === 2 && Tutorial.isActive(TUTORIAL_STATE.DIM2));

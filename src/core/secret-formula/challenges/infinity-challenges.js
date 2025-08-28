@@ -8,8 +8,8 @@ export const infinityChallenges = [
     goal: DC.E650,
     isQuickResettable: true,
     reward: {
-      description: () => `${formatX(1.3, 1, 1)} on all Infinity Dimensions for each Infinity Challenge completed`,
-      effect: () => Math.pow(1.3, InfinityChallenges.completed.length),
+      description: () => `${formatX(3, 1, 1)} on all Infinity Dimensions for each Infinity Challenge completed`,
+      effect: () => Math.pow(3, InfinityChallenges.completed.length),
       formatEffect: value => formatX(value, 1, 1)
     },
     unlockAM: DC.E2000,
@@ -18,7 +18,7 @@ export const infinityChallenges = [
     id: 2,
     description: () => `Dimensional Sacrifice happens automatically every ${formatInt(400)} milliseconds once you have
       an 8th Antimatter Dimension.`,
-    goal: DC.E10500,
+    goal: DC.E9500,
     isQuickResettable: false,
     reward: {
       description: () => `Dimensional Sacrifice autobuyer and stronger Dimensional Sacrifice
@@ -32,15 +32,15 @@ export const infinityChallenges = [
     description: () =>
       `Tickspeed upgrades are always ${formatX(1)}. For every Tickspeed upgrade purchase, you instead get a static
       multiplier on all Antimatter Dimensions which increases based on Antimatter Galaxies.`,
-    goal: DC.E5000,
+    goal: DC.E3500,
     isQuickResettable: false,
-    effect: () => Decimal.pow(1.05 + (player.galaxies * 0.005), player.totalTickBought),
+    effect: () => Decimal.pow(1.05 + (player.galaxies * 0.03), player.totalTickBought),
     formatEffect: value => formatX(value, 2, 2),
     reward: {
       description: `Antimatter Dimension multiplier based on Antimatter Galaxies and Tickspeed purchases`,
       effect: () => (Laitela.continuumActive
-        ? Decimal.pow(1.05 + (player.galaxies * 0.005), Tickspeed.continuumValue)
-        : Decimal.pow(1.05 + (player.galaxies * 0.005), player.totalTickBought)),
+        ? Decimal.pow(1.05 + (player.galaxies * 0.03), Tickspeed.continuumValue)
+        : Decimal.pow(1.05 + (player.galaxies * 0.03), player.totalTickBought)),
       formatEffect: value => formatX(value, 2, 2),
     },
     unlockAM: DC.E12000,
@@ -54,17 +54,16 @@ export const infinityChallenges = [
     isQuickResettable: true,
     effect: 0.25,
     reward: {
-      description: () => `All Antimatter Dimension multipliers become multiplier${formatPow(1.05, 2, 2)}`,
-      effect: 1.05
+      description: () => `All Antimatter Dimension multipliers become multiplier${formatPow(1.1, 2, 1)}`,
+      effect: 1.1
     },
     unlockAM: DC.E14000,
   },
   {
     id: 5,
-    description:
-      `buying Antimatter Dimensions 1-4 causes all cheaper AD costs to increase.
-      Buying Antimatter Dimensions 5-8 causes all more expensive AD costs to increase.`,
-    goal: DC.E16500,
+    description: () =>
+      `Antimatter Dimensions and Tickspeed are reduced (${formatPow(0.66, 2, 2)}).`,
+    goal: DC.E7950,
     isQuickResettable: true,
     reward: {
       description: () =>
@@ -79,7 +78,7 @@ export const infinityChallenges = [
     description: () =>
       `exponentially rising matter divides the multiplier on all of your Antimatter Dimensions
       once you have at least ${formatInt(1)} 2nd Antimatter Dimension.`,
-    goal: DC.D2E22222,
+    goal: DC.E19500,
     isQuickResettable: true,
     effect: () => Currency.matter.value.clampMin(1),
     formatEffect: value => `/${format(value, 1, 2)}`,
@@ -103,11 +102,11 @@ export const infinityChallenges = [
         TimeStudy(81)
       );
       return `you cannot buy Antimatter Galaxies. Base Dimension Boost multiplier is increased to a maximum
-        of ${formatX(10)}. (Current base multiplier: ${formatX(mult, 2, 1)})`;
+        of ${formatX(11)}. (Current base multiplier: ${formatX(mult, 2, 1)})`;
     },
-    goal: DC.E10000,
+    goal: DC.E8000,
     isQuickResettable: false,
-    effect: 10,
+    effect: 11,
     reward: {
       description: () => `Dimension Boost multiplier is increased to a minimum of ${formatX(4)}`,
       effect: 4
@@ -119,16 +118,31 @@ export const infinityChallenges = [
     description: () =>
       `AD production rapidly and continually drops over time. Purchasing Antimatter Dimension or Tickspeed
         upgrades sets production back to ${formatPercents(1)} before it starts dropping again.`,
-    goal: DC.E27000,
+    goal: DC.E23000,
     isQuickResettable: true,
     effect: () => DC.D0_8446303389034288.pow(
       Math.max(0, player.records.thisInfinity.time - player.records.thisInfinity.lastBuyTime)),
     reward: {
       description:
         "You get a multiplier to AD 2-7 based on 1st and 8th AD multipliers.",
-      effect: () => AntimatterDimension(1).multiplier.times(AntimatterDimension(8).multiplier).pow(0.02),
+      effect: () => AntimatterDimension(1).multiplier.times(AntimatterDimension(8).multiplier).pow(0.18).min('1e10000'),
       formatEffect: value => formatX(value, 2, 2)
     },
-    unlockAM: DC.E28000,
+    unlockAM: DC.E26000,
+  },
+  {
+    id: 9,
+    description: () =>
+      `ADs are weaker based on the distance beteen Dimension Boosts and Antimatter Galaxies.`,
+    goal: DC.E50000,
+    isQuickResettable: true,
+    effect: () => Math.min(1 / Math.abs(player.dimensionBoosts - player.galaxies), 1),
+    reward: {
+      description:
+        "You get a multiplier to 8th ADs based on 1st ADs multiplier.",
+      effect: () => AntimatterDimension(1).multiplier.pow(0.15).min('1e3000'),
+      formatEffect: value => formatX(value, 2, 2)
+    },
+    unlockAM: DC.E55000,
   },
 ];

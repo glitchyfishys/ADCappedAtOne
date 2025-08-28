@@ -32,11 +32,6 @@ export default {
     upgrades() {
       return GalaxyGeneratorUpgrades.all;
     },
-    galaxyText() {
-      let text = format(Math.max(this.galaxies, 0), 2);
-      if (this.galaxies < 0) text += ` [${format(this.galaxies, 2)}]`;
-      return text;
-    },
     sacrificeText() {
       return this.capRift.galaxyGeneratorText.replace("$value", this.capRiftName);
     },
@@ -50,7 +45,6 @@ export default {
       this.isCapped = GalaxyGenerator.isCapped;
       this.isCollapsed = player.celestials.pelle.collapsed.galaxies && !this.isCapped;
       if (this.isCollapsed || !this.isUnlocked) return;
-      this.galaxies = player.galaxies + GalaxyGenerator.galaxies;
       this.generatedGalaxies = GalaxyGenerator.generatedGalaxies;
       this.galaxiesPerSecond = GalaxyGenerator.gainPerSecond;
       this.cap = GalaxyGenerator.generationCap;
@@ -82,7 +76,7 @@ export default {
         class="c-collapse-icon-clickable"
         @click="toggleCollapse"
       />
-      Galaxy Generator
+      Dimension Generator
     </div>
     <div
       v-if="!isCollapsed"
@@ -91,8 +85,8 @@ export default {
       <div v-if="isUnlocked">
         <div>
           You have a total of
-          <span class="c-galaxies-amount">{{ galaxyText }}</span>
-          Galaxies.
+          <span class="c-galaxies-amount">{{ format(generatedGalaxies, 2, 1) }}</span>
+          9th Antimatter Dimensions.
           <span class="c-galaxies-amount">+{{ format(galaxiesPerSecond, 2, 1) }}/s</span>
         </div>
         <div>
@@ -130,7 +124,7 @@ export default {
               v-else
               class="c-increase-cap-text c-medium-text"
             >
-              {{ format(generatedGalaxies, 2) }} / {{ format(cap, 2) }} Galaxies generated
+              {{ format(generatedGalaxies, 2) }} / {{ format(cap, 2) }} 9th Antimatter Dimensions generated
             </div>
           </button>
         </div>
@@ -148,7 +142,7 @@ export default {
         class="c-generator-unlock-button"
         @click="unlock"
       >
-        Unlock the Galaxy Generator
+        Unlock the Dimension Generator
       </button>
     </div>
   </div>

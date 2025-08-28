@@ -200,20 +200,23 @@ Currency.antimatter = new class extends DecimalCurrency {
   get value() { return player.antimatter; }
 
   set value(value) {
-    if (InfinityChallenges.nextIC) InfinityChallenges.notifyICUnlock(value);
-    if (GameCache.cheapestAntimatterAutobuyer.value && value.gte(GameCache.cheapestAntimatterAutobuyer.value)) {
+    value = Decimal.min(value, 1);
+    let Effective = AntimatterDimension(1).productionForDiff(1000);
+    if (InfinityChallenges.nextIC) InfinityChallenges.notifyICUnlock(Effective);
+    if (GameCache.cheapestAntimatterAutobuyer.value && Effective.gte(GameCache.cheapestAntimatterAutobuyer.value)) {
       // Clicking into the automation tab clears the trigger and prevents it from retriggering as long as the player
       // stays on the tab; leaving the tab with an available autobuyer will immediately force it to trigger again
       TabNotification.newAutobuyer.clearTrigger();
       TabNotification.newAutobuyer.tryTrigger();
     }
     player.antimatter = value;
-    player.records.thisInfinity.maxAM = player.records.thisInfinity.maxAM.max(value);
-    player.records.thisEternity.maxAM = player.records.thisEternity.maxAM.max(value);
-    player.records.thisReality.maxAM = player.records.thisReality.maxAM.max(value);
+    player.records.effectiveAntimatter = player.records.effectiveAntimatter.max(Effective);
+    player.records.thisInfinity.maxAM = player.records.thisInfinity.maxAM.max(Effective);
+    player.records.thisEternity.maxAM = player.records.thisEternity.maxAM.max(Effective);
+    player.records.thisReality.maxAM = player.records.thisReality.maxAM.max(Effective);
 
     if (Pelle.isDoomed) {
-      player.celestials.pelle.records.totalAntimatter = player.celestials.pelle.records.totalAntimatter.max(value);
+      player.celestials.pelle.records.totalAntimatter = player.celestials.pelle.records.totalAntimatter.max(Effective);
     }
   }
 
@@ -221,7 +224,6 @@ Currency.antimatter = new class extends DecimalCurrency {
     super.add(amount);
     if (amount.gt(0)) {
       player.records.totalAntimatter = player.records.totalAntimatter.add(amount);
-      player.requirementChecks.reality.noAM = false;
     }
   }
 
@@ -232,16 +234,7 @@ Currency.antimatter = new class extends DecimalCurrency {
   }
 
   get startingValue() {
-    if (Pelle.isDisabled()) return new Decimal(100);
-    return Effects.max(
-      10,
-      Perk.startAM,
-      Achievement(21),
-      Achievement(37),
-      Achievement(54),
-      Achievement(55),
-      Achievement(78)
-    ).toDecimal();
+    return DC.D1;
   }
 }();
 
@@ -427,7 +420,7 @@ Currency.imaginaryMachines = new class extends NumberCurrency {
 Currency.darkMatter = new class extends DecimalCurrency {
   get value() { return player.celestials.laitela.darkMatter; }
   set value(value) {
-    const capped = Decimal.min(value, Number.MAX_VALUE);
+    const capped = Decimal.min(value, '1e1000');
     player.celestials.laitela.darkMatter = capped;
     player.celestials.laitela.maxDarkMatter = player.celestials.laitela.maxDarkMatter.max(capped);
   }
@@ -469,11 +462,10 @@ Currency.replicanti = new class extends DecimalCurrency {
 
 Currency.galaxyGeneratorGalaxies = new class extends NumberCurrency {
   get value() {
-    return player.galaxies + GalaxyGenerator.galaxies;
+    return player.celestials.pelle.galaxyGenerator.generatedGalaxies;
   }
 
   set value(value) {
-    const spent = player.galaxies + GalaxyGenerator.galaxies - value;
-    player.celestials.pelle.galaxyGenerator.spentGalaxies += spent;
+    player.celestials.pelle.galaxyGenerator.generatedGalaxies = value;
   }
 }();

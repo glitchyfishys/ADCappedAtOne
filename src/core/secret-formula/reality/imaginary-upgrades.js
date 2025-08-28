@@ -131,12 +131,12 @@ export const imaginaryUpgrades = [
     name: "Transience of Information",
     id: 13,
     cost: 5e7,
-    requirement: () => `Reach ${format(Number.MAX_VALUE, 2)} projected Reality Machines within
+    requirement: () => `Reach ${format(DC.E1000, 2)} projected Reality Machines within
       The Nameless Ones' Reality`,
     hasFailed: () => !Enslaved.isRunning,
     // This is for consistency with the UI, which displays an amplified "projected RM" value on the reality button
     checkRequirement: () => Enslaved.isRunning &&
-      MachineHandler.uncappedRM.times(simulatedRealityCount(false) + 1).gte(Number.MAX_VALUE),
+      MachineHandler.uncappedRM.times(simulatedRealityCount(false) + 1).gte(DC.E1000),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     description: "Increase Imaginary Machine Cap based on Imaginary Upgrades purchased",
     effect: () => 1 + ImaginaryUpgrades.totalRebuyables / 20 + ImaginaryUpgrades.totalSinglePurchase / 2,
@@ -163,7 +163,7 @@ export const imaginaryUpgrades = [
     requirement: () => `Reach ${format("1e1500000000000")} antimatter without
       ever having any 1st Infinity Dimensions`,
     hasFailed: () => player.requirementChecks.reality.maxID1.gt(0),
-    checkRequirement: () => player.requirementChecks.reality.maxID1.eq(0) && player.antimatter.exponent >= 1.5e12,
+    checkRequirement: () => player.requirementChecks.reality.maxID1.eq(0) && player.records.effectiveAntimatter.exponent >= 1.5e12,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     canLock: true,
     // This upgrade lock acts in multiple different conditions, but isn't 100% foolproof and also blocks a few edge
@@ -244,7 +244,7 @@ export const imaginaryUpgrades = [
     requirement: () => `Reach ${format("1e7400000000000")} antimatter with Continuum disabled for the entire Reality`,
     hasFailed: () => !player.requirementChecks.reality.noContinuum,
     checkRequirement: () => player.requirementChecks.reality.noContinuum &&
-      Currency.antimatter.value.log10() >= 7.4e12,
+      player.records.effectiveAntimatter.log10() >= 7.4e12,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     canLock: true,
     lockEvent: "enable Continuum",
@@ -263,7 +263,7 @@ export const imaginaryUpgrades = [
     // Note: 4 cursed glyphs is -12 glyph count, but equipping a positive glyph in the last slot is allowed
     hasFailed: () => !Effarig.isRunning || player.requirementChecks.reality.maxGlyphs > -10,
     checkRequirement: () => Effarig.isRunning && player.requirementChecks.reality.maxGlyphs < -10 &&
-      Currency.antimatter.value.exponent >= 1.5e11,
+      player.records.effectiveAntimatter.exponent >= 1.5e11,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     description: () => `All Glyph Sacrifice totals are increased to ${format(1e100)}`,
     effect: 1e100,
@@ -310,11 +310,11 @@ export const imaginaryUpgrades = [
     cost: 1.6e15,
     formatCost: x => format(x, 1),
     requirement: () => `Reach Reality in Lai'tela's Reality with all Dimensions disabled and
-      at least ${formatInt(4)} empty Glyph slots`,
+      at least ${formatInt(3)} empty Glyph slots`,
     hasFailed: () => !Laitela.isRunning || Laitela.maxAllowedDimension !== 0 ||
-      Glyphs.activeWithoutCompanion.length > 1,
+      Glyphs.activeWithoutCompanion.length > 2,
     checkRequirement: () => Laitela.isRunning && Laitela.maxAllowedDimension === 0 &&
-      Glyphs.activeWithoutCompanion.length <= 1 && TimeStudy.reality.isBought,
+      Glyphs.activeWithoutCompanion.length <= 2 && TimeStudy.reality.isBought,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     canLock: true,
     lockEvent: "equip another non-Companion Glyph",

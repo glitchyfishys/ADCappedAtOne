@@ -78,8 +78,7 @@ export const glyphSacrifice = {
       if (Pelle.isDisabled("glyphsac")) return 0;
       const sac = player.reality.glyphs.sac.effarig + (added ?? 0);
       // This doesn't use the GlyphSacrificeHandler cap because it hits its cap (+100%) earlier
-      const capped = Math.clampMax(sac, 1e70);
-      return 2 * Math.log10(capped / 1e20 + 1);
+      return Math.min(3 * Math.log10(sac / 1e20 + 1), 100);
     },
     description: amount => `+${formatPercents(amount / 100, 2)} additional Glyph rarity`,
     cap: () => 1e70
@@ -90,7 +89,7 @@ export const glyphSacrifice = {
       if (Pelle.isDisabled("glyphsac")) return 0;
       const sac = player.reality.glyphs.sac.reality + (added ?? 0);
       // This cap is only feasibly reached with the imaginary upgrade, but we still want to cap it at a nice number
-      return Math.clampMax(1 + Math.sqrt(sac) / 15, 100);
+      return Math.clampMax(1 + Math.sqrt(sac) / 7, 100);
     },
     description: amount => `Multiply Memory Chunk gain by ${formatX(amount, 2, 3)}`,
     cap: () => GlyphSacrificeHandler.maxSacrificeForEffects

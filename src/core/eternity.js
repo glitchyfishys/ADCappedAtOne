@@ -137,6 +137,7 @@ export function eternity(force, auto, specialConditions = {}) {
   player.records.thisInfinity.maxAM = DC.D0;
   player.records.thisEternity.maxAM = DC.D0;
   Currency.antimatter.reset();
+  player.records.effectiveAntimatter = DC.D1;
   ECTimeStudyState.invalidateCachedRequirements();
 
   PelleStrikes.eternity.trigger();
@@ -252,6 +253,7 @@ export class EternityMilestoneState {
     return Currency.eternities.gte(this.config.eternities);
   }
 }
+
 export const EternityMilestone = mapGameDataToObject(
   GameDatabase.eternity.milestones,
   config => (config.isBaseResource

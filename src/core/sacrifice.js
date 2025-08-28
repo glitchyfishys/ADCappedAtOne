@@ -8,16 +8,19 @@ export class Sacrifice {
   }
 
   static get canSacrifice() {
-    return DimBoost.purchasedBoosts > 4 && !EternityChallenge(3).isRunning && this.nextBoost.gt(1) &&
-      AntimatterDimension(8).totalAmount.gt(0) && Currency.antimatter.lt(Player.infinityLimit) &&
-      !Enslaved.isRunning;
+    if (DimBoost.purchasedBoosts > 5 && !EternityChallenge(3).isRunning && this.nextBoost.gt(1)
+      && !Enslaved.isRunning && Currency.antimatter.lt(Player.infinityLimit)) {
+
+      if (NormalChallenge(10) && AntimatterDimension(6).totalAmount.gt(0)) return true;
+      return AntimatterDimension(8).totalAmount.gt(0);
+    }
+    return false
   }
 
   static get disabledCondition() {
-    if (NormalChallenge(10).isRunning) return "8th Dimensions are disabled";
     if (EternityChallenge(3).isRunning) return "Eternity Challenge 3";
-    if (DimBoost.purchasedBoosts < 5) return `Requires ${formatInt(5)} Dimension Boosts`;
-    if (AntimatterDimension(8).totalAmount.eq(0)) return "No 8th Antimatter Dimensions";
+    if (DimBoost.purchasedBoosts < 6) return `Requires ${formatInt(6)} Dimension Boosts`;
+    if (AntimatterDimension(8).totalAmount.eq(0) && (NormalChallenge(10) && AntimatterDimension(6).totalAmount.eq(0))) return `No ${NormalChallenge(10) ? 6 : 8}th Antimatter Dimensions`;
     if (this.nextBoost.lte(1)) return `${formatX(1)} multiplier`;
     if (Player.isInAntimatterChallenge) return "Challenge goal reached";
     return "Need to Crunch";
@@ -27,7 +30,7 @@ export class Sacrifice {
     const f = (name, condition) => (name in changes ? changes[name] : condition);
     let factor = 2;
     let places = 1;
-    let base = `(log₁₀(AD1)/${formatInt(10)})`;
+    let base = `(log₁₀(AD1))`;
     if (f("Challenge8isRunning", NormalChallenge(8).isRunning)) {
       factor = 1;
       base = "x";
@@ -84,7 +87,7 @@ export class Sacrifice {
     } else if (InfinityChallenge(2).isCompleted) {
       prePowerSacrificeMult = nd1Amount.dividedBy(sacrificed);
     } else {
-      prePowerSacrificeMult = new Decimal((nd1Amount.log10() / 10) / Math.max(sacrificed.log10() / 10, 1));
+      prePowerSacrificeMult = new Decimal((nd1Amount.log10()) / Math.max(sacrificed.log10(), 1));
     }
 
     return prePowerSacrificeMult.clampMin(1).pow(this.sacrificeExponent);
@@ -103,7 +106,7 @@ export class Sacrifice {
     if (InfinityChallenge(2).isCompleted) {
       prePowerBoost = player.sacrificed;
     } else {
-      prePowerBoost = new Decimal(player.sacrificed.log10() / 10);
+      prePowerBoost = new Decimal(player.sacrificed.log10());
     }
 
     return prePowerBoost.clampMin(1).pow(this.sacrificeExponent);
@@ -113,7 +116,7 @@ export class Sacrifice {
 export function sacrificeReset() {
   if (!Sacrifice.canSacrifice) return false;
   if ((!player.break || (!InfinityChallenge.isRunning && NormalChallenge.isRunning)) &&
-    Currency.antimatter.gt(Decimal.NUMBER_MAX_VALUE)) return false;
+    AntimatterDimension(1).amount.gt(Decimal.NUMBER_MAX_VALUE)) return false;
   if (
     NormalChallenge(8).isRunning &&
     (Sacrifice.totalBoost.gte(Decimal.NUMBER_MAX_VALUE))
@@ -131,7 +134,8 @@ export function sacrificeReset() {
     }
     Currency.antimatter.reset();
   } else if (!isAch118Unlocked) {
-    AntimatterDimensions.resetAmountUpToTier(NormalChallenge(12).isRunning ? 6 : 7);
+    if (NormalChallenge(10)) AntimatterDimensions.resetAmountUpToTier(5);
+    else AntimatterDimensions.resetAmountUpToTier(NormalChallenge(12).isRunning ? 6 : 7);
   }
   player.requirementChecks.infinity.noSacrifice = false;
   EventHub.dispatch(GAME_EVENT.SACRIFICE_RESET_AFTER);

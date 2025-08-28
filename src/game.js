@@ -1,4 +1,4 @@
-import TWEEN from "tween.js";
+import TWEEN from "@tweenjs/tween.js";
 
 import { ElectronRuntime, SteamRuntime } from "@/steam";
 
@@ -17,7 +17,6 @@ if (GlobalErrorHandler.handled) {
 GlobalErrorHandler.cleanStart = true;
 
 export function playerInfinityUpgradesOnReset() {
-
   const infinityUpgrades = new Set(
     ["timeMult", "dimMult", "timeMult2",
       "skipReset1", "skipReset2", "unspentBonus",
@@ -99,7 +98,7 @@ export function gainedInfinityPoints() {
       .floor();
   }
   let ip = player.break
-    ? Decimal.pow10(player.records.thisInfinity.maxAM.log10() / div - 0.75)
+    ? Decimal.pow10(AntimatterDimension(1).totalAmount.log10() / div - 0.75)
     : new Decimal(308 / div);
   if (Effarig.isRunning && Effarig.currentStage === EFFARIG_STAGES.ETERNITY) {
     ip = ip.min(DC.E200);
@@ -172,7 +171,7 @@ export function gainedGlyphLevel() {
 
 export function resetChallengeStuff() {
   player.chall2Pow = 1;
-  player.chall3Pow = DC.D0_01;
+  player.chall3Pow = new Decimal(1e-10);
   Currency.matter.reset();
   player.chall8TotalSacrifice = DC.D1;
   player.postC4Tier = 1;

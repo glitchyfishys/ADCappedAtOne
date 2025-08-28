@@ -45,16 +45,17 @@ export const Laitela = {
     }
   },
   get matterExtraPurchaseFactor() {
-    return (1 + 0.5 * Math.pow(Decimal.pLog10(Currency.darkMatter.max) / 50, 0.4) *
+    return (1 + 0.5 * Math.pow(Decimal.pLog10(Currency.darkMatter.max) / 50, 0.42) *
       (1 + SingularityMilestone.continuumMult.effectOrDefault(0)));
   },
   get realityReward() {
-    return Math.clampMin(Math.pow(100, this.difficultyTier) *
-      Math.pow(360 / player.celestials.laitela.fastestCompletion, 2), 1);
+    if (this.difficultyTier == 1) return 1e10 * Math.pow(360 / player.celestials.laitela.fastestCompletion, 2);
+    return Math.clampMin(Math.pow(1e3, this.difficultyTier) *
+      Math.pow(360 / player.celestials.laitela.fastestCompletion, 2), 1) * 1e7;
   },
   // Note that entropy goes from 0 to 1, with 1 being completion
   get entropyGainPerSecond() {
-    return Math.clamp(Math.pow(Currency.antimatter.value.add(1).log10() / 1e11, 2), 0, 100) / 200;
+    return Math.clamp(Math.pow(player.records.effectiveAntimatter.add(1).log10() / 5e10, 2), 0, 250) / 200;
   },
   get darkMatterMultGain() {
     return Decimal.pow(Currency.darkMatter.value.dividedBy(this.annihilationDMRequirement)

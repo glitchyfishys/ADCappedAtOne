@@ -326,7 +326,7 @@ function giveRealityRewards(realityProps) {
 
   if (Teresa.isRunning) {
     const current = Teresa.runRewardMultiplier;
-    const newMultiplier = Teresa.rewardMultiplier(player.antimatter);
+    const newMultiplier = Teresa.rewardMultiplier(player.records.thisInfinity.maxAM);
     const isHigher = newMultiplier > current;
     const modalText = `You have completed Teresa's Reality! ${isHigher
       ? `Since you gained more Antimatter, you increased your
@@ -334,8 +334,8 @@ function giveRealityRewards(realityProps) {
       : `You did not gain more Antimatter during this run, so the Glyph Sacrifice multiplier
       from Teresa did not increase`}.`;
     Modal.message.show(modalText, {}, 2);
-    if (Currency.antimatter.gt(player.celestials.teresa.bestRunAM)) {
-      player.celestials.teresa.bestRunAM = Currency.antimatter.value;
+    if (player.records.thisInfinity.maxAM.gt(player.celestials.teresa.bestRunAM)) {
+      player.celestials.teresa.bestRunAM = player.records.thisInfinity.maxAM;
       player.celestials.teresa.bestAMSet = Glyphs.copyForRecords(Glyphs.active.filter(g => g !== null));
 
       // Encode iM values into the RM variable as e10000 * iM in order to only require one prop
@@ -694,6 +694,7 @@ export function finishProcessReality(realityProps) {
   player.records.thisEternity.maxAM = DC.D0;
   player.records.thisReality.maxDT = DC.D0;
   player.dilation.lastEP = DC.DM1;
+  player.records.effectiveAntimatter = DC.D1;
   Currency.antimatter.reset();
   Enslaved.autoReleaseTick = 0;
   player.celestials.enslaved.hasSecretStudy = false;

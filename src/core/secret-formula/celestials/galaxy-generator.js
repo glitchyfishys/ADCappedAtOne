@@ -17,34 +17,34 @@ const rebuyable = config => {
 export const pelleGalaxyGeneratorUpgrades = {
   additive: rebuyable({
     id: "galaxyGeneratorAdditive",
-    description: "Increase base Galaxy generation by 2",
+    description: "Increase base Dimension generation by 2",
     cost: x => Math.pow(3, x),
     effect: x => x * 2,
     formatEffect: x => `${format(x, 2, 2)}/s`,
-    currency: () => Currency.galaxyGeneratorGalaxies,
-    currencyLabel: "Galaxy"
+    currency: () => AntimatterDimension(8).amount,
+    currencyLabel: "8th ADs"
   }),
   multiplicative: rebuyable({
     id: "galaxyGeneratorMultiplicative",
-    description: "Multiply Galaxy generation",
+    description: "Multiply Dimension generation",
     cost: x => Math.pow(10, x),
-    effect: x => Decimal.pow(2.5, x),
+    effect: x => Decimal.pow(3, x),
     formatEffect: x => formatX(x, 2, 1),
     currency: () => Currency.galaxyGeneratorGalaxies,
-    currencyLabel: "Galaxy"
+    currencyLabel: "9th ADs"
   }),
   antimatterMult: rebuyable({
     id: "galaxyGeneratorAntimatterMult",
-    description: "Multiply Galaxy generation",
+    description: "Multiply Dimension generation",
     cost: x => Decimal.pow("1e100000000", 10 ** x),
     effect: x => Decimal.pow(2, x),
     formatEffect: x => formatX(x, 2),
-    currency: () => Currency.antimatter,
+    currency: () => player.records.effectiveAntimatter,
     currencyLabel: "Antimatter"
   }),
   IPMult: rebuyable({
     id: "galaxyGeneratorIPMult",
-    description: "Multiply Galaxy generation",
+    description: "Multiply Dimension generation",
     cost: x => Decimal.pow("1e2000000", 100 ** x),
     effect: x => Decimal.pow(2, x),
     formatEffect: x => formatX(x, 2),
@@ -53,8 +53,8 @@ export const pelleGalaxyGeneratorUpgrades = {
   }),
   EPMult: rebuyable({
     id: "galaxyGeneratorEPMult",
-    description: "Multiply Galaxy generation",
-    cost: x => Decimal.pow("1e10000", 1000 ** x),
+    description: "Multiply Dimension generation",
+    cost: x => Decimal.pow("1e10000", 100 ** x),
     effect: x => Decimal.pow(2, x),
     formatEffect: x => formatX(x, 2),
     currency: () => Currency.eternityPoints,

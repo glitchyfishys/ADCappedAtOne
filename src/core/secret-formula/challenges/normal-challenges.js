@@ -96,8 +96,7 @@ export const normalChallenges = [
     id: 9,
     legacyId: 5,
     isQuickResettable: true,
-    description: () => `whenever you buy Tickspeed upgrades or ${formatInt(10)} of an Antimatter Dimension, ` +
-      "everything else of equal cost will increase to its next cost step.",
+    description: () => `Antimatter Dimension cost scale is higher.`,
     name: "Tickspeed Autobuyer",
     reward: "Upgradeable Tickspeed Autobuyer",
     lockedAt: DC.D0,
@@ -107,7 +106,7 @@ export const normalChallenges = [
     legacyId: 4,
     isQuickResettable: false,
     description: () => `there are only ${formatInt(6)} Antimatter Dimensions. Dimension Boost ` +
-      "and Antimatter Galaxy costs are modified.",
+      "and Antimatter Galaxy costs are modified. Dimensional Sacrifice affect the 6th AD along with Effective AM.",
     name: "Automated Dimension Boosts",
     reward: "Dimension Boosts Autobuyer",
     lockedAt: DC.D16,
@@ -126,8 +125,8 @@ export const normalChallenges = [
     id: 12,
     legacyId: 7,
     isQuickResettable: false,
-    description: () => `each Antimatter Dimension produces the Dimension ${formatInt(2)} tiers below it
-      instead of ${formatInt(1)}. Both 1st and 2nd Dimensions produce antimatter.
+    description: () => `each AD produces the Dimension ${formatInt(2)} tiers below it
+      instead of ${formatInt(1)}. the 2nd will still produce the first to prevent softlocking.
       The 2nd, 4th, and 6th Dimensions are made stronger to compensate.`,
     name: "Automated Big Crunches",
     reward: "Big Crunches Autobuyer",

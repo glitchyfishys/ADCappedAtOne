@@ -1505,15 +1505,12 @@ br {
 
 .infotooltip:hover .infotooltiptext {
   left: calc(100% + 0.7rem);
+  visibility: visible;
+  opacity: 1;
 }
 
 .s-base--dark .infotooltip .infotooltiptext {
   border-color: #dddddd;
-}
-
-.infotooltip:hover .infotooltiptext {
-  visibility: visible;
-  opacity: 1;
 }
 
 .infotooltip .infotooltiptext::after {
@@ -6543,10 +6540,7 @@ kbd {
 }
 
 .c-enslaved-run-button__icon__sigil {
-  position: absolute;
-  top: -3.7rem;
-  right: -0.2rem;
-  font-size: 14.8rem;
+  font-size: 12rem;
   transform: rotate(45deg);
 }
 

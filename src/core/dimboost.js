@@ -2,7 +2,7 @@ import { DC } from "./constants";
 
 class DimBoostRequirement {
   constructor(tier, amount) {
-    this.tier = tier;
+    this.tier = tier - (NormalChallenge(12).isRunning ? 2 : 1);
     this.amount = amount;
   }
 
@@ -46,7 +46,7 @@ export class DimBoost {
   }
 
   static get maxDimensionsUnlockable() {
-    return NormalChallenge(10).isRunning ? 6 : 8;
+    return NormalChallenge(10).isRunning ? 7 : 9;
   }
 
   static get canUnlockNewDimension() {
@@ -71,14 +71,14 @@ export class DimBoost {
     if (NormalChallenge(8).isRunning) {
       // See above. It's important we check for this after checking for IC1 since otherwise
       // this case would trigger when we're in IC1.
-      return 5;
+      return 6;
     }
-    return Infinity;
+    return 1e15;
   }
 
   static get canBeBought() {
     if (DimBoost.purchasedBoosts >= this.maxBoosts) return false;
-    if (player.records.thisInfinity.maxAM.gt(Player.infinityGoal) &&
+    if (AntimatterDimension(1).amount.gt(Player.infinityGoal) &&
        (!player.break || Player.isInAntimatterChallenge)) return false;
     return true;
   }
@@ -98,16 +98,16 @@ export class DimBoost {
 
   static bulkRequirement(bulk) {
     const targetResets = DimBoost.purchasedBoosts + bulk;
-    const tier = Math.min(targetResets + 3, this.maxDimensionsUnlockable);
-    let amount = 20;
+    const tier = Math.min(targetResets + 3, this.maxDimensionsUnlockable + (NormalChallenge(12).isRunning ? 1 : 0));
+    let amount = 1000;
     const discount = Effects.sum(
       TimeStudy(211),
       TimeStudy(222)
     );
-    if (tier === 6 && NormalChallenge(10).isRunning) {
-      amount += Math.round((targetResets - 3) * (20 - discount));
-    } else if (tier === 8) {
-      amount += Math.round((targetResets - 5) * (15 - discount));
+    if (tier === 7 && NormalChallenge(10).isRunning) {
+      amount = 20 + Math.round((targetResets - 4) * (10 - discount));
+    } else if (tier >= 9) {
+      amount = 20 + Math.round((targetResets - 6) * (15 - discount));
     }
     if (EternityChallenge(5).isRunning) {
       amount += Math.pow(targetResets - 1, 3) + targetResets - 1;
@@ -146,7 +146,7 @@ export class DimBoost {
     else boostEffects = `${newUnlock} and ${formattedMultText} ${dimensionRange}`;
 
     if (boostEffects === "") return "Dimension Boosts are currently useless";
-    const areDimensionsKept = (Perk.antimatterNoReset.isBought || Achievement(111).canBeApplied) &&
+    const areDimensionsKept = (Achievement(111).canBeApplied || Perk.antimatterNoReset.canBeApplied) &&
       (!Pelle.isDoomed || PelleUpgrade.dimBoostResetsNothing.isBought);
     if (areDimensionsKept) return boostEffects[0].toUpperCase() + boostEffects.substring(1);
     return `Reset your Dimensions to ${boostEffects}`;
@@ -165,7 +165,7 @@ export class DimBoost {
   }
 
   static get startingDimensionBoosts() {
-    if (InfinityUpgrade.skipResetGalaxy.isBought) return 4;
+    if (InfinityUpgrade.skipResetGalaxy.isBought) return 5;
     if (InfinityUpgrade.skipReset3.isBought) return 3;
     if (InfinityUpgrade.skipReset2.isBought) return 2;
     if (InfinityUpgrade.skipReset1.isBought) return 1;
@@ -182,7 +182,7 @@ export function softReset(tempBulk, forcedADReset = false, forcedAMReset = false
   resetChallengeStuff();
   const canKeepDimensions = Pelle.isDoomed
     ? PelleUpgrade.dimBoostResetsNothing.canBeApplied
-    : Perk.antimatterNoReset.canBeApplied;
+    : (Achievement(111).isUnlocked || Perk.antimatterNoReset.canBeApplied);
   if (forcedADReset || !canKeepDimensions) {
     AntimatterDimensions.reset();
     player.sacrificed = DC.D0;
@@ -194,16 +194,18 @@ export function softReset(tempBulk, forcedADReset = false, forcedAMReset = false
     : (Achievement(111).isUnlocked || Perk.antimatterNoReset.canBeApplied);
   if (!forcedAMReset && canKeepAntimatter) {
     Currency.antimatter.bumpTo(Currency.antimatter.startingValue);
+    
   } else {
     Currency.antimatter.reset();
+    player.records.effectiveAntimatter = DC.D1;
   }
   EventHub.dispatch(GAME_EVENT.DIMBOOST_AFTER, bulk);
 }
 
 export function skipResetsIfPossible(enteringAntimatterChallenge) {
   if (enteringAntimatterChallenge || Player.isInAntimatterChallenge) return;
-  if (InfinityUpgrade.skipResetGalaxy.isBought && player.dimensionBoosts < 4) {
-    player.dimensionBoosts = 4;
+  if (InfinityUpgrade.skipResetGalaxy.isBought && player.dimensionBoosts < 5) {
+    player.dimensionBoosts = 5;
     if (player.galaxies === 0) player.galaxies = 1;
   } else if (InfinityUpgrade.skipReset3.isBought && player.dimensionBoosts < 3) player.dimensionBoosts = 3;
   else if (InfinityUpgrade.skipReset2.isBought && player.dimensionBoosts < 2) player.dimensionBoosts = 2;
