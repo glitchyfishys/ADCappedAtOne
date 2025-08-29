@@ -129,9 +129,10 @@ export class DimBoost {
     const allNDUnlocked = EternityMilestone.unlockAllND.isReached;
 
     let newUnlock = "";
-    if (!allNDUnlocked && boosts < DimBoost.maxDimensionsUnlockable - 4) {
+    if (player.galaxies === 0 && !PlayerProgress.infinityUnlocked() && boosts < 5) newUnlock = `unlock the 9th Dimension?`;
+    else if (!allNDUnlocked && boosts < DimBoost.maxDimensionsUnlockable - 5) {
       newUnlock = `unlock the ${boosts + 5}th Dimension`;
-    } else if (boosts === 4 && !NormalChallenge(10).isRunning && !EternityChallenge(3).isRunning) {
+    } else if ((boosts === 5 || (NormalChallenge(10).isRunning && boosts === 3)) && !EternityChallenge(3).isRunning) {
       newUnlock = "unlock Sacrifice";
     }
 
