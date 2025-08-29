@@ -11,7 +11,7 @@ export class Sacrifice {
     if (DimBoost.purchasedBoosts > 5 && !EternityChallenge(3).isRunning && this.nextBoost.gt(1)
       && !Enslaved.isRunning && Currency.antimatter.lt(Player.infinityLimit)) {
 
-      if (NormalChallenge(10) && AntimatterDimension(6).totalAmount.gt(0)) return true;
+      if (NormalChallenge(10).isRunning && AntimatterDimension(6).totalAmount.gt(0)) return true;
       return AntimatterDimension(8).totalAmount.gt(0);
     }
     return false
@@ -20,7 +20,7 @@ export class Sacrifice {
   static get disabledCondition() {
     if (EternityChallenge(3).isRunning) return "Eternity Challenge 3";
     if (DimBoost.purchasedBoosts < 6) return `Requires ${formatInt(6)} Dimension Boosts`;
-    if (AntimatterDimension(8).totalAmount.eq(0) && (NormalChallenge(10) && AntimatterDimension(6).totalAmount.eq(0))) return `No ${NormalChallenge(10) ? 6 : 8}th Antimatter Dimensions`;
+    if (AntimatterDimension(8).totalAmount.eq(0) && (NormalChallenge(10).isRunning && AntimatterDimension(6).totalAmount.eq(0))) return `No ${NormalChallenge(10).isRunning ? 6 : 8}th Antimatter Dimensions`;
     if (this.nextBoost.lte(1)) return `${formatX(1)} multiplier`;
     if (Player.isInAntimatterChallenge) return "Challenge goal reached";
     return "Need to Crunch";
@@ -134,7 +134,7 @@ export function sacrificeReset() {
     }
     Currency.antimatter.reset();
   } else if (!isAch118Unlocked) {
-    if (NormalChallenge(10)) AntimatterDimensions.resetAmountUpToTier(5);
+    if (NormalChallenge(10).isRunning) AntimatterDimensions.resetAmountUpToTier(5);
     else AntimatterDimensions.resetAmountUpToTier(NormalChallenge(12).isRunning ? 6 : 7);
   }
   player.requirementChecks.infinity.noSacrifice = false;
