@@ -89,7 +89,7 @@ export const GameStorage = {
   },
 
   get localStorageKey() {
-    return DEV ? "dimensionTestSave" : "dimensionSave";
+    return DEV ? "ADCappedAtOneTestSave" : "ADCappedAtOneSave";
   },
 
   backupDataKey(saveSlot, backupSlot) {
