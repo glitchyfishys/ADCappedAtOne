@@ -120,9 +120,6 @@ function applyNDMultipliers(mult, tier) {
         TimeStudy(234)
       );
   }
-  if (tier === 6 && NormalChallenge(6).isRunning) {
-    multiplier = multiplier.times(Sacrifice.totalBoost).mul(Achievement(18).effectOrDefault(1));
-  }
   if (tier === 8) {
     multiplier = multiplier.times(Sacrifice.totalBoost).mul(Achievement(18).effectOrDefault(1));
     multiplier = multiplier.times(InfinityChallenge(9).reward.effectOrDefault(1));
@@ -204,9 +201,11 @@ function onBuyDimension(tier) {
 
   player.postC4Tier = tier;
   player.records.thisInfinity.lastBuyTime = player.records.thisInfinity.time;
-  if (tier !== 8) player.requirementChecks.eternity.onlyAD8 = false;
   if (tier > 2) player.requirementChecks.eternity.onlyAD1 = false;
-  if (tier === 8) player.requirementChecks.infinity.noAD8 = false;
+  if (tier === 8) {
+    player.requirementChecks.eternity.onlyAD8 = false;
+    player.requirementChecks.infinity.noAD8 = false;
+  }
   if (tier > 1) {
     player.requirementChecks.eternity.noAD1 = false;
     player.requirementChecks.reality.noAM = false;

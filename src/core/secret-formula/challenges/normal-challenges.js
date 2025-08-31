@@ -106,7 +106,7 @@ export const normalChallenges = [
     legacyId: 4,
     isQuickResettable: false,
     description: () => `there are only ${formatInt(6)} Antimatter Dimensions. Dimension Boost ` +
-      "and Antimatter Galaxy costs are modified. Dimensional Sacrifice affect the 6th AD along with Effective AM.",
+      "and Antimatter Galaxy costs are modified.",
     name: "Automated Dimension Boosts",
     reward: "Dimension Boosts Autobuyer",
     lockedAt: DC.D16,
